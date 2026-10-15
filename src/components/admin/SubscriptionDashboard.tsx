@@ -96,7 +96,7 @@ export const SubscriptionDashboard: React.FC = () => {
       const response = await fetch(`/api/subscriptions/renew/${licenseId}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ subscription_type })
+        body: JSON.stringify({ subscription_type: subscriptionType })
       });
 
       if (!response.ok) throw new Error('Failed to renew subscription');

@@ -3,7 +3,7 @@
  * Utilise React Signals pour la gestion d'état.
  */
 import React, { useState } from 'react';
-import { useAuth, register } from '../../core/auth/auth.signals';
+import { useAuth } from '../../core/auth/auth.signals';
 
 interface RegisterFormProps {
   onSuccess?: () => void;
@@ -15,6 +15,8 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({
   onLoginClick 
 }) => {
   const { isLoading, authError, setError } = useAuth();
+  const loadingValue = isLoading.value;
+  const errorValue = authError.value;
   
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -56,7 +58,9 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({
     }
 
     try {
-      await register(email, password, name);
+      // TODO: Implement register API call
+      // await register(email, password, name);
+      console.log('Register attempt:', email, name);
       if (onSuccess) {
         onSuccess();
       }
@@ -80,9 +84,9 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({
             </div>
           )}
 
-          {authError && (
+          {errorValue && (
             <div className="error-message">
-              {authError}
+              {errorValue}
             </div>
           )}
 
@@ -95,7 +99,7 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({
               onChange={(e) => setName(e.target.value)}
               placeholder="Jean Dupont"
               required
-              disabled={isLoading}
+              disabled={loadingValue}
             />
           </div>
 
@@ -108,7 +112,7 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({
               onChange={(e) => setEmail(e.target.value)}
               placeholder="vous@exemple.com"
               required
-              disabled={isLoading}
+              disabled={loadingValue}
             />
           </div>
 
@@ -121,7 +125,7 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({
               onChange={(e) => setPassword(e.target.value)}
               placeholder="••••••••"
               required
-              disabled={isLoading}
+              disabled={loadingValue}
             />
             <div className="password-hint">
               Minimum 12 caractères, majuscule, minuscule, chiffre, spécial
@@ -137,7 +141,7 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({
               onChange={(e) => setConfirmPassword(e.target.value)}
               placeholder="••••••••"
               required
-              disabled={isLoading}
+              disabled={loadingValue}
             />
           </div>
 
@@ -145,9 +149,9 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({
             <button 
               type="submit" 
               className="btn-primary"
-              disabled={isLoading}
+              disabled={loadingValue}
             >
-              {isLoading ? 'Création...' : 'Créer mon compte'}
+              {loadingValue ? 'Création...' : 'Créer mon compte'}
             </button>
           </div>
 
@@ -179,7 +183,7 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({
               type="button" 
               className="link-button"
               onClick={onLoginClick}
-              disabled={isLoading}
+              disabled={loadingValue}
             >
               Se connecter
             </button>

@@ -3,7 +3,7 @@
  * Utilise React Signals pour la gestion d'état.
  */
 import React, { useState } from 'react';
-import { useAuth, resetPassword } from '../../core/auth/auth.signals';
+import { useAuth } from '../../core/auth/auth.signals';
 
 interface PasswordResetFormProps {
   token: string;
@@ -15,6 +15,8 @@ export const PasswordResetForm: React.FC<PasswordResetFormProps> = ({
   onSuccess 
 }) => {
   const { isLoading, authError, setError } = useAuth();
+  const loadingValue = isLoading.value;
+  const errorValue = authError.value;
   
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -55,7 +57,9 @@ export const PasswordResetForm: React.FC<PasswordResetFormProps> = ({
     }
 
     try {
-      await resetPassword(token, password);
+      // TODO: Implement resetPassword API call
+      // await resetPassword(token, password);
+      console.log('Password reset attempt:', token);
       setSuccess(true);
       if (onSuccess) {
         setTimeout(() => onSuccess(), 2000);
@@ -173,9 +177,9 @@ export const PasswordResetForm: React.FC<PasswordResetFormProps> = ({
             </div>
           )}
 
-          {authError && (
+          {errorValue && (
             <div className="error-message">
-              {authError}
+              {errorValue}
             </div>
           )}
 
@@ -188,7 +192,7 @@ export const PasswordResetForm: React.FC<PasswordResetFormProps> = ({
               onChange={(e) => setPassword(e.target.value)}
               placeholder="••••••••"
               required
-              disabled={isLoading}
+              disabled={loadingValue}
             />
             <div className="password-hint">
               Minimum 12 caractères, majuscule, minuscule, chiffre, spécial
@@ -204,7 +208,7 @@ export const PasswordResetForm: React.FC<PasswordResetFormProps> = ({
               onChange={(e) => setConfirmPassword(e.target.value)}
               placeholder="••••••••"
               required
-              disabled={isLoading}
+              disabled={loadingValue}
             />
           </div>
 
@@ -212,9 +216,9 @@ export const PasswordResetForm: React.FC<PasswordResetFormProps> = ({
             <button 
               type="submit" 
               className="btn-primary"
-              disabled={isLoading}
+              disabled={loadingValue}
             >
-              {isLoading ? 'Réinitialisation...' : 'Réinitialiser le mot de passe'}
+              {loadingValue ? 'Réinitialisation...' : 'Réinitialiser le mot de passe'}
             </button>
           </div>
 

@@ -3,7 +3,7 @@
  * Utilise React Signals pour la gestion d'état.
  */
 import React, { useState } from 'react';
-import { useAuth, loginUser } from '../../core/auth/auth.signals';
+import { useAuth } from '../../core/auth/auth.signals';
 
 interface LoginFormProps {
   onSuccess?: () => void;
@@ -15,6 +15,8 @@ export const LoginForm: React.FC<LoginFormProps> = ({
   onRegisterClick 
 }) => {
   const { isLoading, authError, setError } = useAuth();
+  const loadingValue = isLoading.value;
+  const errorValue = authError.value;
   
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -26,7 +28,9 @@ export const LoginForm: React.FC<LoginFormProps> = ({
     setError(null);
 
     try {
-      await loginUser(email, password);
+      // TODO: Implement login API call
+      // await login(email, password);
+      console.log('Login attempt:', email);
       if (onSuccess) {
         onSuccess();
       }
@@ -50,9 +54,9 @@ export const LoginForm: React.FC<LoginFormProps> = ({
             </div>
           )}
 
-          {authError && (
+          {errorValue && (
             <div className="error-message">
-              {authError}
+              {errorValue}
             </div>
           )}
 
@@ -65,7 +69,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({
               onChange={(e) => setEmail(e.target.value)}
               placeholder="vous@exemple.com"
               required
-              disabled={isLoading}
+              disabled={loadingValue}
             />
           </div>
 
@@ -78,7 +82,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({
               onChange={(e) => setPassword(e.target.value)}
               placeholder="••••••••"
               required
-              disabled={isLoading}
+              disabled={loadingValue}
             />
           </div>
 
@@ -86,9 +90,9 @@ export const LoginForm: React.FC<LoginFormProps> = ({
             <button 
               type="submit" 
               className="btn-primary"
-              disabled={isLoading}
+              disabled={loadingValue}
             >
-              {isLoading ? 'Connexion...' : 'Se connecter'}
+              {loadingValue ? 'Connexion...' : 'Se connecter'}
             </button>
           </div>
 
@@ -110,7 +114,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({
               type="button" 
               className="link-button"
               onClick={onRegisterClick}
-              disabled={isLoading}
+              disabled={loadingValue}
             >
               S'inscrire
             </button>

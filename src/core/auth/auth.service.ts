@@ -2,7 +2,7 @@
  * Service d'authentification pour les appels API.
  * Implémente les méthodes pour communiquer avec le backend.
  */
-import { authState, login, logout, updateTokens, setLoading, setError } from './auth.signals';
+import { authState, login, logout, updateTokens, setLoading, setError, User, Tokens } from './auth.signals';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4242/api';
 
@@ -10,22 +10,8 @@ const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4242/a
  * Interface réponse d'authentification
  */
 export interface AuthResponse {
-  user: {
-    id: string;
-    email: string;
-    name: string;
-    role: string;
-    permissions: string[];
-    is_active: boolean;
-    created_at: string;
-    last_login?: string;
-  };
-  tokens: {
-    access_token: string;
-    refresh_token: string;
-    token_type: string;
-    expires_in: number;
-  };
+  user: User;
+  tokens: Tokens;
 }
 
 /**

@@ -14,11 +14,6 @@ const nextConfig: NextConfig = {
   compress: true,
   poweredByHeader: false,
   reactStrictMode: true,
-  swcMinify: true,
-  // Optimisation pour les connexions variables
-  experimental: {
-    optimizeCss: true,
-  },
 };
 
 export default nextConfig;
